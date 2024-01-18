@@ -1,57 +1,61 @@
-import dotenv from "dotenv";
-import createError from "http-errors";
-import morgan from "morgan";
-import colors from "colors";
-import cors from "cors";
 import express from "express";
-import path from "path";
-import cookieParser from "cookie-parser";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import connectDb from "./utils/db.js";
-import authRouter from "./routes/auth-route.js";
-import contactRouter from "./routes/contact-route.js";
-import productrouter from "./routes/product-route.js";
+import colors from "colors";
+import dotenv from "dotenv";
+import morgan from "morgan";
+import cors from "cors";
+import connectDb from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import payPalPaymentRoutes from "./routes/payPalPaymentRoutes.js";
+import Klarna from "./routes/KlarnaRoutes.js";
 
+//env config
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url); // Convert the URL to a file path
-const __dirname = dirname(__filename); // Get the directory name
-
-const corsOptions = {
-  origin: "http://localhost:3000",
-};
-var app = express();
-app.use(cors(corsOptions));
-// app.use(morgan("dev"));
-app.use(morgan("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
-
-const PORT = process.env.PORT;
-app.set("view engine", "ejs");
-app.use("/api/auth/", authRouter);
-app.use("/api/contact/", contactRouter);
-app.use("/api/product", productrouter);
-
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
-});
+//mongo db connection
 connectDb();
+
+// rest object
+const app = express();
+
+// CORS Configuration
+const corsOptions = {
+  origin: ["", "http://localhost:3003"],
+  optionsSuccessStatus: 200, // Some legacy browsers (e.g., IE11) may require this
+};
+
+//middelwares
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(morgan("dev"));
+
+//auth routes
+app.use("/api/v1/user", authRoutes);
+app.use("/api/v1/category", categoryRoutes);
+app.use("/api/v1/product", productRoutes);
+app.use("/api/v1/order", orderRoutes);
+app.use("/api/v1/payment", payPalPaymentRoutes);
+app.use("/api/v1/payment", Klarna);
+
+const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
+
+//rest api
+app.get("/", (req, res) => {
+  res.send({ message: " Welcome to node js - Schrankdesign" });
+});
+
+// PORT
+const PORT = process.env.PORT || 8080;
+
+// Listen
 app.listen(PORT, () => {
-  console.log(`'listening on port'${PORT}`.bgCyan.red);
+  console.log(
+    colors.bgCyan.white(
+      `Server running on ${process.env.DEV_MODE} mode on port ${PORT}`
+    )
+  );
+  console.log("Client id is ", PAYPAL_CLIENT_ID);
+  console.log("Secret  id is ", PAYPAL_CLIENT_SECRET);
 });

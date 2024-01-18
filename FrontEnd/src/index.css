@@ -1,49 +1,243 @@
- @tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+
 @layer components {
   .site-button {
     @apply cursor-pointer bg-[#5a8560] text-white px-6 py-3 hover:px-6 md:px-8 md:py-4  md:hover:px-9  rounded-md uppercase font-semibold tracking-widest transition-all duration-300;
   }
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-} 
-
-
-
-
-
-.slick-slide > div {
-  margin: 0 5px;
-}
-.slick-list {
-  margin: 0 -10px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-.slick-slide *:focus{
-  outline: none;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.slick-prev {
-  left: 0% !important;
-  z-index: 1;
-  background-color: rgb(192, 189, 189);
+body {
+  font-family: sans-serif;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
-.slick-next {
-  right: 0% !important;
-  z-index: 1;
-  background-color: rgb(192, 189, 189);
+
+@keyframes colorChange {
+  0% {
+    color: rgb(118, 178, 125);
+  }
+  100% {
+    color: rgb(83, 123, 89);
+  }
 }
+
+.animate-color-change {
+  animation: colorChange 3s infinite; /* Adjust the duration as needed */
+}
+
+.footer .payment_methods {
+  display: grid;
+  grid-gap: 8px;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, 38px);
+}
+
+.nav_link {
+  cursor: pointer;
+  position: relative;
+  border: none;
+  background: none;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-duration: 1000ms;
+  transition-property: color;
+  overflow: hidden; /* Added overflow property */
+}
+
+.nav_link:after {
+  content: "";
+  pointer-events: none;
+  bottom: -2px;
+  left: 0%;
+  position: absolute;
+  width: 0%;
+  margin-top: 2px;
+  height: 3px;
+  background-color: #484747;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-duration: 500ms;
+  transition-property: width, left;
+}
+
+.nav_link:focus:after,
+.nav_link:hover:after {
+  width: 100%;
+  left: 0%;
+}
+
+.image-zoom {
+  transition: transform 0.5s ease;
+  /* transform: translateZ(0); Allow to promote on its own layer */
+}
+
+.image-zoom:hover {
+  transform: scale(1.03);
+}
+
+.scrolling-effect {
+  --sb-track-color: #ffffff;
+  --sb-thumb-color: #dfdfdf;
+  --sb-size: 6px;
+
+  scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+}
+
+.scrolling-effect::-webkit-scrollbar {
+  width: var(--sb-size);
+  height: var(--sb-size);
+}
+
+.scrolling-effect::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 10px;
+}
+
+.scrolling-effect::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 10px;
+}
+.scrolling-effect {
+  overflow-x: scroll;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+
+.banner {
+  background-image: url("../public/images/home/banner.webp");
+  height: 500px;
+}
+
+.banner_2 {
+  background-image: url("../public/images/home/banner_2.webp");
+  height: 500px;
+}
+
+.banner_3 {
+  background-image: url("../public/images/home/banner_3.webp");
+  height: 700px;
+  background-size: cover;
+}
+
+.banner_4 {
+  background-image: url("../public/images/home/banner_4.webp");
+  height: 500px;
+  background-size: cover;
+}
+
+.splide__pagination__page.is-active {
+  background: #5a8560 !important;
+}
+
+.reviews_home_section .splide__arrow svg {
+  fill: #5a8560 !important;
+}
+
+.single_product:hover .image1 {
+  display: none;
+  transition: all;
+  transition-duration: 300ms;
+}
+
+.single_product:hover .image2 {
+  display: block;
+  transition: all;
+  transition-duration: 300ms;
+}
+
+.single_product .image2 {
+  display: none;
+  transition: all;
+  transition-duration: 300ms;
+}
+
+.single_product:hover .image2,
+.single_product:hover .image1 {
+  cursor: pointer;
+}
+
+.single_product_page .slick-dots li {
+  width: 100px;
+}
+
+.nav-link .active {
+  border-color: black;
+  padding-left: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .banner {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: auto;
+  }
+  .banner_2 {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: auto;
+  }
+  .banner_3 {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 400px;
+  }
+  .single_product_page .slick-dots li {
+    width: 50px;
+  }
+
+  
+}
+.dev-sec{
+  display: flex !important;
+  justify-content: space-between !important; 
+  padding:30px 150px 20px 150px;
+  font-size: 24px;
+}
+
+.cart-p{
+  background-color: #F5F5F5;
+  /* height: 310vh; */
+  border-left: 1px solid rgb(204, 202, 202);
+}
+
+.flex_btn{
+  display: flex !important;
+  justify-content: space-between !important; 
+  margin-bottom: 50px;
+
+}
+
+.payment-div{
+  background-color: #F4F4F4;
  
+}
+
+.credit-payment{
+  display: flex !important;
+  justify-content: space-between !important; 
+  width: 100%;
+  
+  
+}
+
+.custom-shadow {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+
+
+.pp-funding-venmo,
+.pp-funding-credit,
+.pp-funding-card,
+.pp-funding-paylater {
+  display: none !important;
+}

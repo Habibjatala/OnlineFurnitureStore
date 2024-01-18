@@ -1,24 +1,29 @@
 import React from "react";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import router from "./routes";
 import "./index.css";
 import App from "./App";
-import { ToastContainer } from "react-toastify";
-
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import { store } from "./store/store";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const initialOptions = {
+  clientId:
+    "ATj2bPbR4OKB77hcGUmKLIeXHpQGj-qBVzWwVLN1_1RCpgMddmi4GK5rtZRjhws_WAFGmxvtXpnZhkRg",
+  currency: "EUR",
+  intent: "capture",
+};
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-      <ToastContainer />
-    </Provider>
+    <PayPalScriptProvider options={initialOptions}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </PayPalScriptProvider>
   </React.StrictMode>
 );
 

@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Paypal from "../Payments/Paypal";
 
-const CheckOutForm = () => {
+const CheckOutForm = ({ data }) => {
   const [selectedPayment, setSelectedPayment] = useState("");
   const [isSaveDetail, setIsSaveDetail] = useState(false);
   const [newBillingAdd, setNewBillingAdd] = useState(null);
@@ -1016,7 +1016,7 @@ const CheckOutForm = () => {
         <div>
           {selectedPayment === "paypal" && (
             <div className="mt-20">
-              <Paypal height="55" color="blue" price="300" />
+              <Paypal height="55" color="blue" price="300" data={data} />
             </div>
           )}
         </div>

@@ -12,7 +12,7 @@ export const registerController = async (req, res) => {
 
     //validation
     const missingFields = {};
-    if (!name) missingFields.name = "Your Name is required";
+    if (!name) missingFields.name = "Name is required";
     if (!email) missingFields.email = "Email is required";
     if (!password) missingFields.password = "Password is required";
     if (!answer) missingFields.address = "Answer is required";

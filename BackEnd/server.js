@@ -6,11 +6,11 @@ import cors from "cors";
 import connectDb from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
+//import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import payPalPaymentRoutes from "./routes/payPalPaymentRoutes.js";
 import Klarna from "./routes/KlarnaRoutes.js";
-
+import productrouter from "./routes/product-route.js";
 //env config
 dotenv.config();
 
@@ -34,7 +34,8 @@ app.use(morgan("dev"));
 //auth routes
 app.use("/api/v1/user", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
-app.use("/api/v1/product", productRoutes);
+//app.use("/api/v1/product", productRoutes);
+app.use("/api/v1/products", productrouter);
 app.use("/api/v1/order", orderRoutes);
 app.use("/api/v1/payment", payPalPaymentRoutes);
 app.use("/api/v1/payment", Klarna);

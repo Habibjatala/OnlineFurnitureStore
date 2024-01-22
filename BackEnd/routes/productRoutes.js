@@ -1,42 +1,42 @@
-import express from "express";
-import formidable from "express-formidable";
-import {
-  createProductController,
-  getProductController,
-  productsCheckoutsession,
-  stripeWebhookController,
-} from "../controllers/productController.js";
-import { isAdmin, requireSignIn } from "../middelwares/auhMiddelware.js";
+// import express from "express";
+// import formidable from "express-formidable";
+// import {
+//   createProductController,
+//   getProductController,
+//   productsCheckoutsession,
+//   stripeWebhookController,
+// } from "../controllers/productController.js";
+// import { isAdmin, requireSignIn } from "../middelwares/auhMiddelware.js";
 
-// router object
-const router = express.Router();
+// // router object
+// const router = express.Router();
 
-// CREATE PRODUCT || POST
-router.post(
-  "/create-product",
-  requireSignIn,
-  isAdmin,
-  formidable(),
-  createProductController
-);
+// // CREATE PRODUCT || POST
+// router.post(
+//   "/create-product",
+//   requireSignIn,
+//   isAdmin,
+//   formidable(),
+//   createProductController
+// );
 
-// GET PRODUCT || GET
-router.get("/get-products", getProductController);
+// // GET PRODUCT || GET
+// router.get("/get-products", getProductController);
 
-router.post(
-  "/create-checkout-session",
-  requireSignIn,
-  formidable(),
-  productsCheckoutsession
-);
+// router.post(
+//   "/create-checkout-session",
+//   requireSignIn,
+//   formidable(),
+//   productsCheckoutsession
+// );
 
-router.post(
-  "/stripe-webhook",
-  express.json({ type: "application/json" }),
-  async (req, res) => {
-    stripeWebhookController(req, res);
-  }
-);
-// ----------------------------------------------------------------------------------------
+// router.post(
+//   "/stripe-webhook",
+//   express.json({ type: "application/json" }),
+//   async (req, res) => {
+//     stripeWebhookController(req, res);
+//   }
+// );
+// // ----------------------------------------------------------------------------------------
 
-export default router;
+// export default router;

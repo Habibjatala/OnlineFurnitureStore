@@ -35,7 +35,6 @@ import UserOrders from "./pages/dashboard/user/UserOrders";
 import UserDetailOrder from "./pages/dashboard/user/UserDetailOrder";
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/checkout/checkout";
-import Test from "./pages/dashboard/admin/Test";
 
 function ScrollToTopOnPathChange() {
   const location = useLocation();
@@ -54,7 +53,7 @@ function App() {
       <ScrollToTopOnPathChange /> {/* Add this line */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/test" element={<Test />} />
+
         {/* Single Collections, Quality, Servie and Product */}
         <Route
           path="/collections/:slug"

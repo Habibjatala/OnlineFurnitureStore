@@ -15,8 +15,15 @@ import Klarna from "../../components/Payments/Klarna";
 
 const Checkout = () => {
   const storeMusterCart = useSelector((state) => state.basket.musterItems);
-  // const storeCart = useSelector((state) => state.basket.items);
+  const storeCart = useSelector((state) => state.basket.items);
+  const initialCounts = JSON.parse(localStorage.getItem("productCounts")) || {};
+  const [grandTotalPrice, setGrandTotalPrice] = useState("");
+  const [productCounts, setProductCounts] = useState(initialCounts);
 
+  const totalCartProductPrice = storeCart.reduce((accumulator, currentItem) => {
+    const count = productCounts[currentItem.id] || 1;
+    return accumulator + count * currentItem.price;
+  }, 0);
   const [isImpressumModalOpen, setIsImpressumModalOpen] = useState(false);
   const [isAGBModalOpen, setIsAGBModalOpen] = useState(false);
   const [isWiderrufsrechtModalOpen, setIsWiderrufsrechtModalOpen] =
@@ -29,20 +36,28 @@ const Checkout = () => {
     prouductprice: "",
   });
   useEffect(() => {
-    if (storeMusterCart.length > 0) {
-      const firstItem = storeMusterCart[0];
-      const ProductName = firstItem.name;
-      const ProductPrice = firstItem.price;
+    if (storeMusterCart.length > 0 || storeCart.length > 0) {
+      // Concatenate names from both storeMusterCart and storeCart
+      const allProductNames = [
+        ...storeMusterCart.map((item) => item.name),
+        ...storeCart.map((item) => item.name),
+      ];
+
+      // Combine the names into a single string
+      const productName = allProductNames.join(", ");
+
+      // Calculate the total price based on your logic (e.g., grandTotalPrice)
+      const productPrice = calculateTotalMusterPrice() + totalCartProductPrice;
 
       setData({
-        productname: ProductName,
-        prouductprice: ProductPrice,
+        productname: productName,
+        prouductprice: productPrice,
       });
     }
-  }, [storeMusterCart]);
+  }, [storeMusterCart, storeCart]);
 
   // CALCULATE MUSTER ITEMS  PRICE
-  const calculateTotalPrice = () => {
+  const calculateTotalMusterPrice = () => {
     const additionalItemCost = 2; // Cost for each item beyond the first 4
 
     // Filter items based on category ("Holz-Furniere")
@@ -112,6 +127,10 @@ const Checkout = () => {
   const handleVersand = () => {
     setIsVersandModalOpen(true);
   };
+
+  useEffect(() => {
+    setGrandTotalPrice(calculateTotalMusterPrice() + totalCartProductPrice);
+  }, []);
 
   return (
     <>
@@ -205,7 +224,7 @@ const Checkout = () => {
                 <div className="flex-1 border-t border-gray-300"></div>
               </div>
             </div>
-            <CheckOutForm />
+            <CheckOutForm data={data} />
           </div>
           <div className=" mt-5 flex-1 border-t border-gray-300"></div>
           <div className=" flex justify-center p-5">
@@ -267,23 +286,31 @@ const Checkout = () => {
           </div>
         </div>
         <div className="w-1/2  cart-p">
-          {!storeMusterCart ? (
+          {storeMusterCart ? (
             <>
               <div className="  ml-20 mr-24 mt-14 ">
                 <div className="grid  md:grid-cols-12 pt-1  pr-5 pb-5">
-                  {/* {storeCart?.map((item, i) => (
+                  {storeCart?.map((item, i) => (
                     <>
-                      <div className="w-full md:col-span-2  border-2 border-gray-300  mb-5 rounded-xl">
-                        <img className="rounded-xl" src={item.image} alt="" />
+                      <div className="relative  w-full md:col-span-2  border-2 border-gray-300  mb-5 rounded-xl">
+                        <div className="absolute top-0 right-0 px-3 py-2  inline-block -translate-y-1/2 translate-x-1/2  rounded-full bg-gray-400   text-white text-xs">
+                          {productCounts[item.id] || 1}
+                        </div>
+
+                        <img
+                          className="rounded-xl"
+                          src={item.defaultImg}
+                          alt="missing"
+                        />
                       </div>
                       <div className="w-full md:col-span-8   pl-5 pt-5 text-gray-400 ">
                         {item.name}
                       </div>
                       <div className="w-full md:col-span-2    pt-5 ">
-                        {item.price} €
+                        {item?.price * (productCounts[item.id] || 1)} €
                       </div>
                     </>
-                  ))} */}
+                  ))}
                   {storeMusterCart?.map((item, i) => (
                     <>
                       <div className="w-full md:col-span-2  border-2 border-gray-300  mb-5 rounded-xl">
@@ -298,7 +325,6 @@ const Checkout = () => {
                     </>
                   ))}
                 </div>
-
                 <div className="grid  md:grid-cols-12   pr-5 pb-5">
                   <div className="  md:col-span-10    pt-5 ">
                     <input
@@ -319,7 +345,7 @@ const Checkout = () => {
 
                 <div className="flex justify-between">
                   <p className="text-sm text-gray-600">Zwischensumme</p>
-                  <p>{calculateTotalPrice().toFixed(2)} €</p>
+                  <p>{grandTotalPrice} €</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-sm text-gray-600">Versand</p>
@@ -327,9 +353,7 @@ const Checkout = () => {
                 </div>
                 <div className="flex justify-between mt-5">
                   <p className="text-lg font-bold">Summe</p>
-                  <p className="font-bold ">
-                    {calculateTotalPrice().toFixed(2)} €
-                  </p>
+                  <p className="font-bold ">{grandTotalPrice} €</p>
                 </div>
               </div>
             </>

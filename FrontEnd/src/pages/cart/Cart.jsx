@@ -39,6 +39,7 @@ const Cart = () => {
   const auth = useSelector((state) => state.user.user);
   console.log("cart :", storeCart);
   const initialCounts = JSON.parse(localStorage.getItem("productCounts")) || {};
+  console.log(" cart count :", initialCounts);
   const [productCounts, setProductCounts] = useState(initialCounts);
 
   useEffect(() => {
@@ -71,7 +72,9 @@ const Cart = () => {
 
   const createBlobUrl = (data, contentType) => {
     const byteArray = new Uint8Array(data);
+
     const blob = new Blob([byteArray], { type: contentType });
+
     return URL.createObjectURL(blob);
   };
 
@@ -184,11 +187,8 @@ const Cart = () => {
                       <div className="grid grid-cols-12 gap-4 border-b">
                         <div className="col-span-4 my-2">
                           <img
-                            src={createBlobUrl(
-                              item?.defaultImg?.data?.data,
-                              item?.contentType
-                            )}
-                            alt=""
+                            src={item.defaultImg}
+                            alt={item.defaultImg}
                             className="rounded-md h-36 w-36"
                           />
                         </div>
@@ -202,7 +202,7 @@ const Cart = () => {
                           </p>
                         </div>
                         <div className="col-span-2 my-auto font-semibold">
-                          <div className="border-solid border-2 border-gray flex space-x-5   ">
+                          <div className="border-solid border-2 border-gray flex justify-between    ">
                             <button
                               className="ml-2"
                               onClick={() => handleDecrement(item.id)}
@@ -210,7 +210,10 @@ const Cart = () => {
                               -
                             </button>
                             <p>{productCounts[item.id] || 1}</p>
-                            <button onClick={() => handleIncrement(item.id)}>
+                            <button
+                              className="mr-2"
+                              onClick={() => handleIncrement(item.id)}
+                            >
                               +
                             </button>
                           </div>
@@ -463,15 +466,35 @@ const Cart = () => {
                     </g>
                   </svg>
                   <svg
+                    xmlns="http://www.w3.org/2000/svg"
                     role="img"
-                    // viewBox="0 0 24 24"
                     width="70"
                     height="40"
-                    viewBox="0 0 50 50"
-                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 38 24"
+                    aria-labelledby="pi-klarna"
+                    style={{ marginLeft: "15px" }}
                   >
-                    <title>Klarna</title>
-                    <path d="M4.592 2v20H0V2h4.592zm11.46 0c0 4.194-1.583 8.105-4.415 11.068l-.278.283L17.702 22h-5.668l-6.893-9.4 1.779-1.332c2.858-2.14 4.535-5.378 4.637-8.924L11.562 2h4.49zM21.5 17a2.5 2.5 0 110 5 2.5 2.5 0 010-5z" />
+                    <title id="pi-klarna">Klarna</title>
+                    <g
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <path
+                        d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"
+                        fill="#FFB3C7"
+                      ></path>
+                      <path
+                        d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"
+                        fill="#FFB3C7"
+                      ></path>
+                      <path
+                        d="M34.117 13.184c-.487 0-.882.4-.882.892 0 .493.395.893.882.893.488 0 .883-.4.883-.893a.888.888 0 00-.883-.892zm-2.903-.69c0-.676-.57-1.223-1.274-1.223-.704 0-1.274.547-1.274 1.222 0 .675.57 1.223 1.274 1.223.704 0 1.274-.548 1.274-1.223zm.005-2.376h1.406v4.75h-1.406v-.303a2.446 2.446 0 01-1.394.435c-1.369 0-2.478-1.122-2.478-2.507 0-1.384 1.11-2.506 2.478-2.506.517 0 .996.16 1.394.435v-.304zm-11.253.619v-.619h-1.44v4.75h1.443v-2.217c0-.749.802-1.15 1.359-1.15h.016v-1.382c-.57 0-1.096.247-1.378.618zm-3.586 1.756c0-.675-.57-1.222-1.274-1.222-.703 0-1.274.547-1.274 1.222 0 .675.57 1.223 1.274 1.223.704 0 1.274-.548 1.274-1.223zm.005-2.375h1.406v4.75h-1.406v-.303A2.446 2.446 0 0114.99 15c-1.368 0-2.478-1.122-2.478-2.507 0-1.384 1.11-2.506 2.478-2.506.517 0 .997.16 1.394.435v-.304zm8.463-.128c-.561 0-1.093.177-1.448.663v-.535H22v4.75h1.417v-2.496c0-.722.479-1.076 1.055-1.076.618 0 .973.374.973 1.066v2.507h1.405v-3.021c0-1.106-.87-1.858-2.002-1.858zM10.465 14.87h1.472V8h-1.472v6.868zM4 14.87h1.558V8H4v6.87zM9.45 8a5.497 5.497 0 01-1.593 3.9l2.154 2.97H8.086l-2.341-3.228.604-.458A3.96 3.96 0 007.926 8H9.45z"
+                        fill="#0A0B09"
+                        fill-rule="nonzero"
+                      ></path>
+                    </g>
                   </svg>
                 </div>
               </div>
